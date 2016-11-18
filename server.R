@@ -1,7 +1,7 @@
 library(shiny)
 source("portfolioUtil.R")
 
-fromInternet <<- FALSE
+fromInternet <<- TRUE
 
 shinyServer(function(input, output, session) {
   

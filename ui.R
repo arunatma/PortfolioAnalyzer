@@ -1,6 +1,6 @@
 library(shiny)
 
-shinyUI(navbarPage("MF Portfolio Analyzer",
+shinyUI(navbarPage("MF Portfolio Scanner",
     tabPanel("Portfolio",
         sidebarLayout(
             sidebarPanel(

@@ -6,7 +6,7 @@ getPortfolio <- function(mfURL){
 # Get the Detailed Portfolio of a MF scheme from Morningstar URL and reformat 
 # it in a consumable format.  Returns a data table with portfolio composition
     xx <- readHTMLTable(mfURL)
-    yy <- data.table(xx[7][[1]])
+    yy <- data.table(xx[5][[1]])
     # Name the data table 
     names(yy) = c("dummy1", "Stock", "Instrument", "Sector", 
         "dummy2", "Weight", "MarketValue", "NumberOfShares", 

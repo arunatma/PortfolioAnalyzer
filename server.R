@@ -2,7 +2,7 @@ library(shiny)
 source("portfolioUtil.R")
 
 fromInternet <<- TRUE
-
+allFunds <<- data.table()
 shinyServer(function(input, output, session) {
   
     output$contents <- renderDataTable({
@@ -16,9 +16,9 @@ shinyServer(function(input, output, session) {
         
         if(fromInternet){
             portfolioSplits <- lapply(ownerPortfolio$URL, getPortfolio)
-            for(i in c(1:length(portfolioSplits))){
-                write.csv(portfolioSplits[[i]], ownerPortfolio$Filename[i])
-            }
+            #for(i in c(1:length(portfolioSplits))){
+            #    write.csv(portfolioSplits[[i]], ownerPortfolio$MutualFund[i])
+            #}
         } else {
             portfolioSplits <- list()
             csvFiles <- list.files(path = ".", pattern = "*.csv")
@@ -29,7 +29,7 @@ shinyServer(function(input, output, session) {
         
         for(i in c(1:length(portfolioSplits))){
             portfolioSplits[[i]][, Inv := ownerPortfolio$Value[i] * as.double(as.character(Weight)) / 100]
-            portfolioSplits[[i]][, MF := ownerPortfolio$Filename[i]]
+            portfolioSplits[[i]][, MF := ownerPortfolio$MutualFund[i]]
         }
 
         allFunds <<- do.call("rbind", portfolioSplits)
@@ -66,6 +66,17 @@ shinyServer(function(input, output, session) {
     )
     output$rootStocks <- renderDataTable(
         rootStocks
+    )
+    
+    output$downloadData <- downloadHandler(
+        filename <- function() {
+            paste("SamplePortfolio", "xlsx", sep=".")
+        },
+
+        content <- function(file) {
+            file.copy("SamplePortfolio.xlsx", file)
+        },
+        contentType = "application/zip"
     )
     
 })
